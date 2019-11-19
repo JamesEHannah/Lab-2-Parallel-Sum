@@ -18,11 +18,10 @@ long add_serial(const char *numbers) {
 long add_parallel(const char *numbers) {
     long sum = 0;
 
-    long num = omp_get_max_threads(); //Max number of threads
     long chunk = Num_To_Add / omp_get_max_threads(); //Number of indexes of the array that each thread will have to cover
     long start, end;
 
-    #pragma omp parallel num_threads(num) private(start,end) reduction(+:sum) //Creates a parallel region and reduces the sum of the random numbers to 'sum'
+    #pragma omp parallel num_threads(omp_get_max_threads()) private(start,end) reduction(+:sum) //Creates a parallel region and reduces the sum of the random numbers to 'sum'
     {   //start and end are private so that each thread has its own copy
 
         start = omp_get_thread_num() * chunk; //start represents the starting index in the for loop for the thread
